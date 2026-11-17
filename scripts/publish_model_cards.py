@@ -158,6 +158,8 @@ synthetic rows carry gold labels. Accuracy on real rows therefore partly measure
 
 {provenance_md(prov)}
 
+Synthetic test and training tickets share templates, so the synthetic row measures template recall more than generalisation.
+
 Raw per-ticket predictions: [`eval/predictions.parquet`](https://huggingface.co/{LORA_REPO}/blob/main/eval/predictions.parquet).
 
 ## Usage

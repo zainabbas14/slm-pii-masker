@@ -28,3 +28,4 @@ wandb/
 .DS_Store
 .vscode/
 .idea/
+model_cards/

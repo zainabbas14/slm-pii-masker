@@ -209,7 +209,7 @@ The suite covers JSON extraction (code fences, chatter, escaped braces), schema 
 ## Limitations
 
 - **Masking is typed redaction, not anonymisation.** Seven PII types are replaced by tags; addresses, dates, ages and job titles are left in place and can still identify someone. Two different people both become `[PERSON]`.
-- **Department and urgency labels on real rows are weak labels.** The public corpus has no routing labels, so they come from a transparent keyword labeler with an ambiguity filter; the 20% synthetic rows carry true labels. On real rows, accuracy partly measures agreement with that labeler. `eval/predictions.parquet` on the Hub has an `origin` column to split the two.
+- **Routing accuracy is less proven than masking.** The public corpus has no routing labels, so real rows were labelled by a keyword labeler (fine-tuned agreement: 97.5% department, 97.5% urgency, n=161). Synthetic rows have gold labels and score 100% (n=39), but test and training tickets share the same templates, so this measures template recall more than generalisation. A hand-written test set with unseen phrasings is the next step. Per-row results: `eval/predictions.parquet` on the Hub.
 - **English only, and mostly synthetic text.** ai4privacy is itself generated data, so real tickets will be messier than the test set. Expect lower numbers on production traffic until the model is evaluated on in-domain samples.
 - **The regex fallback finds names only after cues** such as "Mr." or "my name is". In fallback mode, PERSON recall is deliberately conservative.
 
@@ -218,6 +218,7 @@ The suite covers JSON extraction (code fences, chatter, escaped braces), schema 
 - Indexed pseudonyms (`[PERSON_1]`, `[PERSON_2]`) with an optional encrypted re-identification vault
 - Evaluate the GGUF build through Ollama on the full 200-ticket test set, not just the adapter in transformers
 - Retrain with a much shorter system prompt to cut CPU prompt-processing time
+- Hand-labelled routing test set with phrasings unseen in training
 - Extra tags: addresses, dates of birth, IBANs, passport numbers
 - Docker image and a load test on CPU
 

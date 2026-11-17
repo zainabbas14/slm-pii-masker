@@ -2,12 +2,12 @@
 name = "slm-pii-masker"
 version = "1.0.0"
 description = "Fine-tuned 4B SLM for enterprise PII masking and ticket routing, served with FastAPI + Ollama"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
 
 [tool.ruff]
 line-length = 120
-target-version = "py310"
+target-version = "py311"
 extend-exclude = ["notebooks"]
 
 [tool.ruff.lint]

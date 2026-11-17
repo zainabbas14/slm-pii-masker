@@ -183,7 +183,7 @@ pytest        # 81 tests, no model or GPU needed
 ruff check app tests
 ```
 
-The suite covers JSON extraction (code fences, chatter, escaped braces), schema rejection rules, tag/type consistency, the faithfulness check, every regex detector including false-positive cases, routing, every API path (`model`, guard, `hybrid`, each fallback reason), input validation, and a check that the `Modelfile` system prompt matches `configs/prompt_config.json`. CI runs it on Python 3.10 and 3.12.
+The suite covers JSON extraction (code fences, chatter, escaped braces), schema rejection rules, tag/type consistency, the faithfulness check, every regex detector including false-positive cases, routing, every API path (`model`, guard, `hybrid`, each fallback reason), input validation, and a check that the `Modelfile` system prompt matches `configs/prompt_config.json`. CI runs it on Python 3.11 and 3.12.
 
 ## Repository layout
 

@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+  "base_tokenizer": "unsloth/Qwen3-4B-Instruct-2507",
+  "max_seq_length": 2048,
+  "pii_tags": [
+    "PERSON",
+    "EMAIL",
+    "PHONE",
+    "SSN",
+    "CREDIT_CARD",
+    "IP_ADDRESS",
+    "API_KEY"
+  ],
+  "categories": [
+    "Billing_and_Payments",
+    "Technical_Support",
+    "Security_and_Access",
+    "Legal_and_Compliance",
+    "General_Inquiry"
+  ],
+  "urgency_levels": [
+    "Low",
+    "Medium",
+    "High"
+  ],
+  "system_prompt": "You are an enterprise data-protection and ticket-routing engine. Given a raw customer-support ticket or legal/HR snippet, return ONLY a single valid JSON object with exactly these keys, in this order:\n1. \"masked_text\": the input text reproduced exactly, except every piece of sensitive PII is replaced by one of these tags: [PERSON], [EMAIL], [PHONE], [SSN], [CREDIT_CARD], [IP_ADDRESS], [API_KEY]. A full name (first + last) becomes a single [PERSON]. Do not mask anything else and do not rephrase.\n2. \"detected_pii_types\": the list of tag names that appear in masked_text, without brackets, no duplicates, in this order: PERSON, EMAIL, PHONE, SSN, CREDIT_CARD, IP_ADDRESS, API_KEY. Use [] if none.\n3. \"ticket_category\": one of Billing_and_Payments, Technical_Support, Security_and_Access, Legal_and_Compliance, General_Inquiry.\n4. \"urgency_level\": one of Low, Medium, High.\nOutput no markdown, no code fences and no explanation.",
+  "user_template": "Analyze the following ticket.\n\n<ticket>\n{ticket}\n</ticket>"
+}

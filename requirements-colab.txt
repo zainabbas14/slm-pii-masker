@@ -1,0 +1,12 @@
+# Versions used for the published training run (Colab, Tesla T4, 2026-11-15).
+# The notebooks run `pip install unsloth`, which resolves a compatible torch/transformers/trl/peft/bitsandbytes set
+# for the current Colab image; these pins document the exact run for reproducibility.
+unsloth==2026.11.4
+transformers==5.17.0
+torch==2.14.1
+datasets>=3.2.0,<5.0.0
+huggingface_hub>=0.27.0
+pydantic>=2.7,<3
+wandb>=0.17
+scikit-learn>=1.4
+matplotlib>=3.8

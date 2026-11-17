@@ -1,0 +1,10 @@
+# API server + tests (CPU only). Training/eval dependencies live in requirements-colab.txt.
+fastapi==0.163.1
+uvicorn[standard]==0.54.0
+httpx==0.28.1
+pydantic==2.13.5
+pydantic-settings==2.16.3
+
+# dev / CI
+pytest==9.1.1
+ruff==0.16.9

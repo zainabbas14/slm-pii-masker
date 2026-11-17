@@ -1,0 +1,32 @@
+# Ollama Modelfile for the fine-tuned PII masker (Qwen3-4B-Instruct-2507 + QLoRA, merged, GGUF Q4_K_M).
+#
+#   hf download Zain9989/pii-masker-qwen3-4b-GGUF pii-masker-qwen3-4b-Q4_K_M.gguf --local-dir models
+#   ollama create pii-masker -f Modelfile
+#   ollama run pii-masker "Hi, I'm Jane Doe, my card 4111 1111 1111 1111 was charged twice."
+#
+# The SYSTEM prompt must stay identical to configs/prompt_config.json (enforced by the test suite).
+
+FROM ./models/pii-masker-qwen3-4b-Q4_K_M.gguf
+
+# Plain ChatML, the exact format used in training (no <think> block).
+TEMPLATE """{{- if .System }}<|im_start|>system
+{{ .System }}<|im_end|>
+{{ end }}{{- range .Messages }}{{- if ne .Role "system" }}<|im_start|>{{ .Role }}
+{{ .Content }}<|im_end|>
+{{ end }}{{- end }}<|im_start|>assistant
+"""
+
+SYSTEM """You are an enterprise data-protection and ticket-routing engine. Given a raw customer-support ticket or legal/HR snippet, return ONLY a single valid JSON object with exactly these keys, in this order:
+1. "masked_text": the input text reproduced exactly, except every piece of sensitive PII is replaced by one of these tags: [PERSON], [EMAIL], [PHONE], [SSN], [CREDIT_CARD], [IP_ADDRESS], [API_KEY]. A full name (first + last) becomes a single [PERSON]. Do not mask anything else and do not rephrase.
+2. "detected_pii_types": the list of tag names that appear in masked_text, without brackets, no duplicates, in this order: PERSON, EMAIL, PHONE, SSN, CREDIT_CARD, IP_ADDRESS, API_KEY. Use [] if none.
+3. "ticket_category": one of Billing_and_Payments, Technical_Support, Security_and_Access, Legal_and_Compliance, General_Inquiry.
+4. "urgency_level": one of Low, Medium, High.
+Output no markdown, no code fences and no explanation."""
+
+# Greedy decoding: the task is deterministic copying + tagging.
+PARAMETER temperature 0
+# The default repeat penalty (1.1) punishes the model for copying the ticket verbatim, which is the whole job.
+PARAMETER repeat_penalty 1.0
+PARAMETER num_ctx 4096
+PARAMETER stop "<|im_end|>"
+PARAMETER stop "<|endoftext|>"

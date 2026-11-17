@@ -168,6 +168,8 @@ curl -s localhost:8000/v1/analyze -H 'content-type: application/json' -d '{
 
 Interactive API docs are at <http://localhost:8000/docs>; `GET /health` reports whether the model is reachable.
 
+**Measured on a laptop CPU** (WSL2, Ollama, Q4_K_M, no GPU): **~10–11 s per ticket** once the model is loaded, ~35 s for the very first request. Schema-constrained decoding (`OLLAMA_FORMAT=schema`) added no measurable latency and produced identical output.
+
 **Other modes** (set in `.env`):
 
 - `BACKEND=llamacpp`: point the API at `llama-server -m models/pii-masker-qwen3-4b-Q4_K_M.gguf --port 8080 --temp 0 --repeat-penalty 1.0`.
@@ -214,7 +216,8 @@ The suite covers JSON extraction (code fences, chatter, escaped braces), schema 
 ## Roadmap
 
 - Indexed pseudonyms (`[PERSON_1]`, `[PERSON_2]`) with an optional encrypted re-identification vault
-- Evaluate the GGUF build through Ollama, not just the adapter in transformers
+- Evaluate the GGUF build through Ollama on the full 200-ticket test set, not just the adapter in transformers
+- Retrain with a much shorter system prompt to cut CPU prompt-processing time
 - Extra tags: addresses, dates of birth, IBANs, passport numbers
 - Docker image and a load test on CPU
 
